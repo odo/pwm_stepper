@@ -15,4 +15,4 @@ Hardware:
 
 The idea is to use the pulse width modulation (PWM) signal to provide exact timing for the motor driver.
 This is achieved by bridging the output pin and the input pin (see red circle in the photo).
-By setting an interrupt on the input pin raising pin we can use the pwm signal to get precise timing to drive the motor.
+By setting an interrupt on the input pin raising we can use the pwm signal to get precise timing to drive the motor.
