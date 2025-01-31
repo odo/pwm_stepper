@@ -14,5 +14,5 @@ Hardware:
 ![hardware_setup](https://github.com/odo/pwm_stepper/blob/main/doc/pwm_stepper.png?raw=true)
 
 The idea is to use the pulse width modulation (PWM) signal to provide exact timing for the motor driver.
-This is achieved by bridging the output pin to the input pin (see red circle in the photo).
+This is achieved by bridging the output pin and the input pin (see red circle in the photo).
 By setting an interrupt on the input pin raising pin we can use the pwm signal to get precise timing to drive the motor.
