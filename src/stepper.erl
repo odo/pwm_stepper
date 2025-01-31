@@ -58,7 +58,7 @@ start_link(Opts) ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, Opts, []).
 
 init(Opts) ->
-    {ok, TimerMessage} = timed_message:init(3),
+    {ok, TimerMessage} = timed_message:init(),
     State = #state{
         mode = maps:get(mode, Opts),
         step_increment = maps:get(step_increment, Opts),
@@ -89,7 +89,7 @@ handle_call({move, Direction, Amount, Speed, EndState}, From, State = #state{cal
     % when calculating the speed, we are factoring in that the first step has no delay
     StepFrequency = trunc(Speed * (260 / State#state.step_increment)),
     drain_timer_messages(State),
-    timed_message:set_frequency(StepFrequency),
+    timed_message:run(StepFrequency),
     NextState =
     State#state{
         caller = From,
@@ -134,8 +134,7 @@ step(State = #state{steps_remaining = 0, direction = nil}) ->
 step(State = #state{steps_remaining = 0, end_state = locked, caller = Caller}) ->
     % we finsihed stepping so we let the caller know
     gen_server:reply(Caller, done),
-    % also we set the timer to a low frequency
-    timed_message:set_frequency(3),
+    timed_message:stop(),
     State#state{caller = nil, direction = nil};
 
 step(State = #state{steps_remaining = 0, end_state = free, caller = Caller}) ->

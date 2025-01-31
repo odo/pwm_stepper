@@ -1,11 +1,16 @@
 -module(timed_message).
 -include("ledc.hrl").
 
--export([init/1, set_frequency/1]).
+-export([init/0, run/1, stop/0, set_frequency/1]).
 
-init(Freq) ->
-    init_pwm(1, Freq),
+init() ->
     listen(2).
+
+run(Freq) ->
+    init_pwm(1, Freq).
+
+stop() ->
+    ledc:stop(?LEDC_HIGH_SPEED_MODE, ?LEDC_CHANNEL_0, 0).
 
 listen(DetectionPin) ->
     io:format("Set up listener.~n"),
